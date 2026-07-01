@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #f4f1ea;       /* paper canvas (page background) */
+  --color-panel: #ffffff;      /* card surface */
+  --color-acid: #2547ff;       /* ink-blue — primary accent */
+  --color-volt: #e23b2e;       /* red — secondary accent */
+  --color-ink: #14110d;        /* near-black text */
+  --color-muted: #6b665c;      /* warm grey — secondary text / borders */
+  --font-mono: ui-monospace, "JetBrains Mono", "SFMono-Regular", monospace;
+}
+
+html, body {
+  background: var(--color-void);
+  color: var(--color-ink);
+}
+
+/* Tinted ring + soft drop shadow — reads as a subtle lift on a light canvas. */
+.glow-acid {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-acid) 35%, transparent),
+    0 10px 28px -14px color-mix(in srgb, var(--color-acid) 55%, transparent);
+}
+.glow-volt {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-volt) 35%, transparent),
+    0 10px 28px -14px color-mix(in srgb, var(--color-volt) 55%, transparent);
+}
+
+@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
