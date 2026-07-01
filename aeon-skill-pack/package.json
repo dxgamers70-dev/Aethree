@@ -1,0 +1,21 @@
+{
+  "name": "aeon-skill-pack-aethree",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Launch agent tokens on the AeThree launchpad from an Aeon agent",
+  "license": "MIT",
+  "scripts": {
+    "launch": "tsx scripts/launch.ts",
+    "test": "vitest run",
+    "test:integration": "RUN_INTEGRATION=1 vitest run scripts/launch.integration.test.ts"
+  },
+  "dependencies": {
+    "viem": "^2.52.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.0",
+    "vitest": "^4.1.9"
+  }
+}

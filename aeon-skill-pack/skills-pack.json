@@ -1,0 +1,20 @@
+{
+  "name": "AeThree Launchpad",
+  "version": "0.1.0",
+  "description": "Launch agent tokens on the AeThree launchpad (Base) from an Aeon agent",
+  "author": "aethree_xyz",
+  "license": "MIT",
+  "homepage": "https://aethree.xyz",
+  "skills": [
+    {
+      "slug": "launch-token",
+      "path": "skills/launch-token",
+      "description": "Launch an agent token on AeThree — seed in AEON, dry-run by default, bounded live opt-in",
+      "category": "crypto",
+      "default_enabled": false,
+      "secrets_required": ["AETHREE_LAUNCHER_PRIVATE_KEY"],
+      "secrets_optional": ["BASE_RPC_URL", "AETHREE_MAX_SEED", "CHAIN_ID"],
+      "capabilities": ["onchain_writes", "external_api"]
+    }
+  ]
+}
