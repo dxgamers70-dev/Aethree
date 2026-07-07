@@ -20,6 +20,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@tanstack/react-query": "^5.101.0",
+    "clanker-sdk": "^4.2.16",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.9",
     "react": "19.2.4",

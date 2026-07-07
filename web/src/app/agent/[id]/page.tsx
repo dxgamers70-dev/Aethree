@@ -5,6 +5,7 @@ import { MonoNum } from "@/ui/MonoNum";
 import AvatarViewer from "@/ui/AvatarViewer";
 import { LaunchPanel } from "@/ui/LaunchPanel";
 import { TradePanel } from "@/ui/TradePanel";
+import { ClankerTokenPanel } from "@/ui/ClankerTokenPanel";
 import { ChatBox } from "@/ui/ChatBox";
 import { GovernancePanel } from "@/ui/GovernancePanel";
 import { getDb } from "@/db/client";
@@ -53,13 +54,21 @@ export default async function AgentPage({ params }: { params: Promise<{ id: stri
             name={agent.name}
             configHash={config?.hash ?? "0x"}
             status={agent.status}
+            avatarUrl={avatarUrl}
           />
 
+          {/* Aetherd launches trade on the in-app bonding curve; Clanker launches link out. */}
           {agent.status === "launched" && agent.saleAddress && agent.tokenAddress && (
             <TradePanel saleAddress={agent.saleAddress} tokenAddress={agent.tokenAddress} />
           )}
+          {agent.launchVenue === "clanker" && agent.tokenAddress && (
+            <ClankerTokenPanel tokenAddress={agent.tokenAddress} />
+          )}
 
-          <GovernancePanel agentId={agent.id} tokenAddress={agent.tokenAddress} />
+          {/* Governance is token-weighted on the ERC20Votes token; Clanker tokens don't have it. */}
+          {agent.launchVenue !== "clanker" && (
+            <GovernancePanel agentId={agent.id} tokenAddress={agent.tokenAddress} />
+          )}
         </div>
       </div>
 

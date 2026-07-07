@@ -15,10 +15,28 @@ test("launchHandler returns 200 with the launched agent", async () => {
   expect(res.body.status).toBe("launched");
 });
 
-test("launchHandler returns 400 when fields are missing", async () => {
+test("launchHandler returns 400 when aetherd fields are missing", async () => {
   const db = await makeTestDb();
   const { agent } = await createAgentDraft(db, { name: "Oracle", persona: "gm", avatarRef: "av-cyber" });
   const res = await launchHandler(db, agent.id, { tokenAddress: "0xT", saleAddress: "0xS" });
+  expect(res.status).toBe(400);
+});
+
+test("launchHandler on Clanker accepts a token address alone", async () => {
+  const db = await makeTestDb();
+  const { agent } = await createAgentDraft(db, { name: "Oracle", persona: "gm", avatarRef: "av-cyber" });
+  const res = await launchHandler(db, agent.id, { tokenAddress: "0xClanker", venue: "clanker" });
+  expect(res.status).toBe(200);
+  expect(res.body.tokenAddress).toBe("0xClanker");
+  expect(res.body.launchVenue).toBe("clanker");
+  expect(res.body.saleAddress).toBeNull();
+  expect(res.body.status).toBe("launched");
+});
+
+test("launchHandler returns 400 when tokenAddress is missing (clanker)", async () => {
+  const db = await makeTestDb();
+  const { agent } = await createAgentDraft(db, { name: "Oracle", persona: "gm", avatarRef: "av-cyber" });
+  const res = await launchHandler(db, agent.id, { venue: "clanker" });
   expect(res.status).toBe(400);
 });
 

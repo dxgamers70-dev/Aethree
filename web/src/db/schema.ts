@@ -6,7 +6,11 @@ export const agents = pgTable("agents", {
   creatorAddr: text("creator_addr"),
   status: text("status").notNull().default("draft"),
   currentConfigId: uuid("current_config_id"),
+  // Where the token was launched: "aetherd" (our bonding-curve launchpad) or "clanker".
+  // Null while the agent is still a draft.
+  launchVenue: text("launch_venue"),
   tokenAddress: text("token_address"),
+  // Only set for the Aetherd venue; Clanker launches leave sale/avatar null.
   saleAddress: text("sale_address"),
   avatarTokenId: bigint("avatar_token_id", { mode: "number" }),
   // Bring-your-own LLM connection. Kept OFF the content-addressed config (never

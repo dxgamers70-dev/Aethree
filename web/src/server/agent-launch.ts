@@ -5,15 +5,26 @@ import { getAgent, type AgentRow } from "@/server/agent-core";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Db = any;
 
+export type LaunchVenue = "aetherd" | "clanker";
+
 /**
  * Records the result of an on-chain agent launch. The agent must currently be a
- * draft; once launched its token/sale addresses and avatar token id are pinned and
- * its status flips to "launched".
+ * draft; once launched its token address (and, for the Aetherd venue, its sale
+ * address + avatar token id) are pinned and its status flips to "launched".
+ *
+ * Aetherd launches deploy an ERC20Votes token + bonding-curve sale + avatar NFT, so
+ * they carry `saleAddress`/`onChainAgentId`. Clanker launches deploy a plain ERC20 +
+ * Uniswap pool with none of those, so those fields stay null.
  */
 export async function recordLaunch(
   db: Db,
   agentId: string,
-  input: { tokenAddress: string; saleAddress: string; onChainAgentId: number },
+  input: {
+    tokenAddress: string;
+    saleAddress?: string;
+    onChainAgentId?: number;
+    venue?: LaunchVenue;
+  },
 ): Promise<AgentRow> {
   const agent = await getAgent(db, agentId);
   if (!agent) throw new Error("agent not found");
@@ -22,9 +33,10 @@ export async function recordLaunch(
   const [updated] = await db
     .update(agents)
     .set({
+      launchVenue: input.venue ?? "aetherd",
       tokenAddress: input.tokenAddress,
-      saleAddress: input.saleAddress,
-      avatarTokenId: input.onChainAgentId,
+      saleAddress: input.saleAddress ?? null,
+      avatarTokenId: input.onChainAgentId ?? null,
       status: "launched",
     })
     .where(eq(agents.id, agentId))

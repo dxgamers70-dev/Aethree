@@ -15,6 +15,7 @@ const usePublicClientSpy = vi.fn(() => ({ simulateContract, waitForTransactionRe
 vi.mock("wagmi", () => ({
   useAccount: () => ({ isConnected: true, address: CREATOR }),
   useChainId: () => 84532,
+  useConfig: () => ({}),
   useSwitchChain: () => ({ switchChainAsync: vi.fn() }),
   usePublicClient: (cfg?: { chainId?: number }) => usePublicClientSpy(cfg),
   useReadContract: (cfg: { functionName?: string }) => {
