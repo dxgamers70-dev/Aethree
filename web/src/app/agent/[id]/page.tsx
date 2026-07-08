@@ -39,6 +39,16 @@ export default async function AgentPage({ params }: { params: Promise<{ id: stri
             <div className="text-xs font-mono uppercase text-muted mt-1">{agent.status}</div>
           </div>
 
+          {(config?.skillName || config?.skillDescription) && (
+            <Panel>
+              <div className="text-xs uppercase font-mono text-muted mb-1">Skill</div>
+              <div className="text-sm font-bold">{config?.skillName || "unnamed skill"}</div>
+              {config?.skillDescription && (
+                <p className="text-sm text-muted mt-0.5">{config.skillDescription}</p>
+              )}
+            </Panel>
+          )}
+
           <Panel>
             <div className="text-xs uppercase font-mono text-muted mb-1">Persona</div>
             <p className="whitespace-pre-wrap text-sm">{config?.persona}</p>

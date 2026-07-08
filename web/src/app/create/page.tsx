@@ -11,6 +11,10 @@ export default function Create() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [skillFile, setSkillFile] = useState("");
+  const [githubUrl, setGithubUrl] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [importError, setImportError] = useState("");
+  const [importedMeta, setImportedMeta] = useState<{ name: string; description: string } | null>(null);
   const [provider, setProvider] = useState<"openai-compatible" | "anthropic">("openai-compatible");
   const [apiKey, setApiKey] = useState("");
   const [baseUrl, setBaseUrl] = useState("");
@@ -33,6 +37,28 @@ export default function Create() {
   async function loadSkillFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) setSkillFile(await file.text());
+  }
+
+  async function importFromGithub() {
+    if (!githubUrl.trim()) return;
+    setImporting(true);
+    setImportError("");
+    setImportedMeta(null);
+    try {
+      const res = await fetch("/api/skills/import", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: githubUrl.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "import failed");
+      setSkillFile(data.skillFile);
+      setImportedMeta({ name: data.name ?? "", description: data.description ?? "" });
+    } catch (err) {
+      setImportError((err as Error).message);
+    } finally {
+      setImporting(false);
+    }
   }
 
   function buildLlm() {
@@ -101,6 +127,39 @@ export default function Create() {
                   <input type="file" accept=".md,.markdown,.txt" className="hidden" onChange={loadSkillFile} />
                 </label>
               </div>
+
+              {/* Install a skill straight from a GitHub repo — fetches its SKILL.md. */}
+              <div className="flex gap-2">
+                <input
+                  className="flex-1 bg-void border border-muted/30 rounded-xl px-3 py-2 text-xs font-mono focus:border-acid outline-none"
+                  value={githubUrl}
+                  onChange={(e) => setGithubUrl(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      importFromGithub();
+                    }
+                  }}
+                  placeholder="github.com/owner/repo/tree/main/path/to/skill"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={importFromGithub}
+                  disabled={importing || !githubUrl.trim()}
+                  className="whitespace-nowrap"
+                >
+                  {importing ? "importing…" : "import"}
+                </Button>
+              </div>
+              {importedMeta && (
+                <p className="text-[11px] font-mono text-acid">
+                  ✓ installed {importedMeta.name || "skill"}
+                  {importedMeta.description ? ` — ${importedMeta.description}` : ""}
+                </p>
+              )}
+              {importError && <p className="text-[11px] font-mono text-red-400">{importError}</p>}
+
               <textarea
                 className="mt-1 w-full bg-void border border-muted/30 rounded-xl px-3 py-2 h-48 font-mono text-xs focus:border-acid outline-none"
                 value={skillFile}
