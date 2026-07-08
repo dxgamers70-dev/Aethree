@@ -107,6 +107,7 @@ export default async function Landing() {
             <Link href="/launchpad" className="hidden sm:inline text-xs font-mono uppercase text-muted hover:text-ink">Launchpad</Link>
             <Link href="/docs" className="hidden sm:inline text-xs font-mono uppercase text-muted hover:text-ink">Docs</Link>
             <Link href="#how" className="hidden md:inline text-xs font-mono uppercase text-muted hover:text-ink">How</Link>
+            <Link href="#skills" className="hidden md:inline text-xs font-mono uppercase text-muted hover:text-ink">Skills</Link>
             <Link href="#agents" className="hidden md:inline text-xs font-mono uppercase text-muted hover:text-ink">Agents</Link>
             <ConnectWallet />
             <Link href="/create"><Button>+ Deploy agent</Button></Link>
@@ -230,6 +231,76 @@ never give financial advice…`}</pre>
               <p className="text-sm text-muted mt-1">{f.d}</p>
             </Panel>
           ))}
+        </div>
+      </section>
+
+      {/* skills & integrations */}
+      <section id="skills" className="max-w-6xl mx-auto px-5 py-16 border-t border-muted/10 scroll-mt-16">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-acid mb-2">Skills &amp; integrations</h2>
+        <p className="text-2xl sm:text-3xl font-black tracking-tight mb-3 max-w-2xl">
+          Give your agents superpowers with Aeon skill packs.
+        </p>
+        <p className="text-muted max-w-2xl mb-8">
+          AeThree agents run on the{" "}
+          <a
+            href="https://github.com/aaronjmars/aeon"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink hover:text-acid underline"
+          >
+            Aeon
+          </a>{" "}
+          platform, so they install skill packs — MCP-compatible tool bundles — straight from the registry.
+          Launch tokens with our built-in pack, or plug in{" "}
+          <span className="text-ink font-semibold">NoelClaw</span>&apos;s 108-tool crypto-intelligence suite.
+        </p>
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* NoelClaw — third-party skill pack */}
+          <Panel className="space-y-3 hover:border-acid/40 transition">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🦾</span>
+                <span className="font-bold text-lg">NoelClaw</span>
+              </div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-acid border border-acid/30 rounded-full px-2 py-0.5">
+                108 tools
+              </span>
+            </div>
+            <p className="text-sm text-muted">
+              Crypto intelligence and DeFi execution on Base, autonomous agents, vault memory, and market
+              simulation — a full skill pack for your Aeon agents.
+            </p>
+            <pre className="font-mono text-[11px] text-muted bg-void border border-ink/10 rounded-lg p-3 overflow-x-auto">$ aeon skill add noelclaw</pre>
+            <a
+              href="https://docs.noelclaw.fun"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm font-mono text-acid hover:underline"
+            >
+              docs.noelclaw.fun →
+            </a>
+          </Panel>
+
+          {/* AeThree's own Aeon skill pack */}
+          <Panel className="space-y-3 hover:border-acid/40 transition">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🪙</span>
+                <span className="font-bold text-lg">launch-token</span>
+              </div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-volt border border-volt/30 rounded-full px-2 py-0.5">
+                AeThree · built-in
+              </span>
+            </div>
+            <p className="text-sm text-muted">
+              Launch an agent token on AeThree straight from an Aeon agent — seed in AEON, dry-run by default,
+              with a bounded live opt-in. No web UI required.
+            </p>
+            <pre className="font-mono text-[11px] text-muted bg-void border border-ink/10 rounded-lg p-3 overflow-x-auto">$ aeon skill add launch-token</pre>
+            <Link href="/docs" className="inline-block text-sm font-mono text-acid hover:underline">
+              Read the docs →
+            </Link>
+          </Panel>
         </div>
       </section>
 
